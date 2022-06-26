@@ -1,4 +1,39 @@
-// todo as function and as decorator
+/**
+ * Memoize decorator
+ * @constructor
+ */
+export function Memoize(){
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    let originalMethod = descriptor.value;
+    //wrapping the original method
+    descriptor.value = function (...args: any[]) {
+
+      const memoizer = memoize(originalMethod)
+      return memoizer.memoized(...args);
+    }
+  }
+}
+
+/**
+ * Memoize function
+ * @param projectionFn
+ * @param comparatorFn
+ */
+export function memoize(  projectionFn: ProjectionFn,
+                          comparatorFn?: ComparatorFn): any {
+  return resultMemoize(projectionFn, comparatorFn ?? defaultComparatorFn);
+}
+
+export type ProjectionFn = (...args: any[]) => any;
+
+export type ComparatorFn = (a: any, b: any) => boolean;
+
+export type MemoizedProjection = {
+  memoized: ProjectionFn;
+  reset: () => void;
+  setResult: (result?: any) => void;
+};
+
 
 function defaultComparatorFn(a: any, b: any): boolean {
   if (a instanceof Array) {
@@ -8,26 +43,6 @@ function defaultComparatorFn(a: any, b: any): boolean {
   return a === b;
 }
 
-export function memoize(  projectionFn: AnyFn,
-                          comparatorFn?: ComparatorFn): any {
-  return resultMemoize(projectionFn, comparatorFn ?? defaultComparatorFn);
-}
-
-
-export type AnyFn = (...args: any[]) => any;
-
-export type MemoizedProjection = {
-  memoized: AnyFn;
-  reset: () => void;
-  setResult: (result?: any) => void;
-  clearResult: () => void;
-};
-
-export type MemoizeFn = (t: AnyFn) => MemoizedProjection;
-
-export type ComparatorFn = (a: any, b: any) => boolean;
-
-export type DefaultProjectorFn<T> = (...args: any[]) => T;
 
 export function isEqualCheck(a: any, b: any): boolean {
   return a === b;
@@ -46,15 +61,15 @@ function isArgumentsChanged(
   return false;
 }
 
-export function resultMemoize(
-  projectionFn: AnyFn,
+ function resultMemoize(
+  projectionFn: ProjectionFn,
   isResultEqual: ComparatorFn
 ) {
   return defaultMemoize(projectionFn, isEqualCheck, isResultEqual);
 }
 
-export function defaultMemoize(
-  projectionFn: AnyFn,
+ function defaultMemoize(
+  projectionFn: ProjectionFn,
   isArgumentsEqual = isEqualCheck,
   isResultEqual = isEqualCheck
 ): MemoizedProjection {
@@ -66,15 +81,14 @@ export function defaultMemoize(
   function reset() {
     lastArguments = null;
     lastResult = null;
+    overrideResult = undefined;
   }
 
   function setResult(result: any = undefined) {
     overrideResult = {result};
   }
 
-  function clearResult() {
-    overrideResult = undefined;
-  }
+
 
   /* eslint-disable prefer-rest-params, prefer-spread */
 
@@ -106,6 +120,6 @@ export function defaultMemoize(
     return newResult;
   }
 
-  return {memoized, reset, setResult, clearResult};
+  return {memoized, reset, setResult};
 
 }
