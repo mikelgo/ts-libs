@@ -4,7 +4,9 @@
   "license": "MIT",
   "scripts": {
     "build:ts-memoize": "nx build ts-memoize",
-    "publish:ts-memoize": "npm run build:ts-memoize && npm publish --access=public"
+    "publish:ts-memoize": "npm run build:ts-memoize && npm publish --access=public",
+    "build:ts-guards": "nx build ts-guards",
+    "publish:ts-guards": "npm run build:ts-guards && npm publish --access=public"
   },
   "private": true,
   "devDependencies": {

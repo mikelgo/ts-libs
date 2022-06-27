@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@mikelgo/ts-guards": ["packages/ts-guards/src/index.ts"],
       "@mikelgo/ts-memoize": ["packages/ts-memoize/src/index.ts"]
     }
   },
