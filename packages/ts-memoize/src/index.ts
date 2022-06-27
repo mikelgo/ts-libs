@@ -1,1 +1,1 @@
-export * from './lib/ts-memoize';
+export {memoize, Memoize} from './lib/ts-memoize';

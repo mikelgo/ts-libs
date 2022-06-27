@@ -36,8 +36,6 @@ describe('memoize function', () => {
     c.calculate(1,1);
     c.calculate(1,1);
 
-    // todo how to test this correctly
-    expect(c.calculate).toHaveBeenCalledTimes(1)
     expect(c.calculate(1,1)).toEqual(2)
   })
   it('should memoize class function ',  () => {
