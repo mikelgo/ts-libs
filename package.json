@@ -2,7 +2,10 @@
   "name": "ts-libs",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "build:ts-memoize": "nx build ts-memoize",
+    "publish:ts-memoize": "npm run build:ts-memoize && npm publish --access=public"
+  },
   "private": true,
   "devDependencies": {
     "@nrwl/cli": "14.3.6",
